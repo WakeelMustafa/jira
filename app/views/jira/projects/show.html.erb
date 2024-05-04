@@ -1,0 +1,30 @@
+<%= javascript_include_tag 'show' %>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="container-question col-md-6 text-center mt-4 centered-column-container">
+    <h4 class="mt-4 text-white">Issue Fields Mapping</h4>
+    <%= form_with model: FieldMapping.new, url: field_mappings_path(project_id: params[:id]), method: :post, id: 'mappingForm' do |form| %>
+      <%= form.hidden_field :project_id, id: 'project_id_hidden_field', value: params[:id] %>
+      <div id="field_mappings_modal">
+        <div class="row field_mapping mt-4 mb-2">
+          <div class="col mt-2">
+            <%= form.label :jira_field_name, 'JIRA Fields', class: "text-white" %>
+            <%= form.select :jira_field, options_for_select({ 'Summary' => 'summary', 'Description' => 'description', 'JIRA Created At' => 'jira_created_at', 'Due Date' => 'due_date', 'Estimation Time' => 'estimated_time', 'Original Time'=> 'actual_time' }), {}, { class: 'form-control jira-field', name: 'field_mapping[jira_field][]' } %>
+          </div>
+          <div class="col mt-2">
+            <%= form.label :codegiant_field_name, 'Codegiant Fields', class: "text-white" %>
+            <%= form.select :codegiant_field, options_for_select(['Title', 'Start Date', 'Due Date', 'Description', 'Story Points', 'Estimated Time', 'Actual Time']), {}, { class: 'form-control codegiant-field', name: 'field_mapping[codegiant_field][]' } %>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="add_mapping_modal" class="btn btn-info mt-3 next-button"><i class="fas fa-plus"></i></button>
+      <button type="submit" class="btn btn-success mt-3 next-button"><i class="fas fa-check"></i></button>
+    <% end %>
+    <div class="mt-4 mb-4 space-between-container">
+      <%= button_to 'Cancel', edit_importing_project_path(@project.id), method: :get, class: 'btn btn-primary btn-lg next-button' %>
+      <%= button_to 'Next', '#', class: 'btn btn-primary btn-lg next-button', id: 'fetch-codegiant-user-button', onclick: "showAlert()" %>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>

@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="container-question col-md-6 text-center mt-4 centered-column-container">
+    <h4 class="mt-4 text-white">Users Mapping</h4>
+    <%= form_tag update_issue_user_path, method: :post, id: 'userMappingForm' do %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <%= hidden_field_tag :id, params[:project_id] %>
+      <div id="userPairsContainer">
+        <div class="row mb-2 mt-4">
+          <div class="col">
+            <select name="jira_user_ids[]" class="form-control">
+              <option value="">Select a Jira User</option>
+              <% @jira_users.each do |user| %>
+                <option value="<%= user.id %>"><%= user.display_name %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="col">
+            <select name="code_giant_user_ids[]" class="form-control">
+              <option value="">Select a CG User</option>
+              <% @code_giant_users.each do |user| %>
+                <option value="<%= user.id %>"><%= user.name %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="addPairBtn" class="btn btn-info mt-3 next-button"><i class="fas fa-plus"></i></button>
+      <button type="submit" class="btn btn-success mt-3 next-button"><i class="fas fa-check"></i></button>
+    <% end %>
+    <div class="mt-4 mb-4 space-between-container">
+      <%= button_to 'Cancel', project_path( params[:project_id]), method: :get, class: 'btn btn-primary btn-lg next-button' %>
+      <%= button_to 'Done', root_path, method: :get, class: 'btn btn-primary btn-lg next-button' %>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('addPairBtn').addEventListener('click', function() {
+      var container = document.getElementById('userPairsContainer');
+      var row = document.createElement('div');
+      row.className = 'row mb-2';
+
+      var col1 = document.createElement('div');
+      col1.className = 'col';
+      var col2 = document.createElement('div');
+      col2.className = 'col';
+
+      var jiraSelect = document.createElement('select');
+      jiraSelect.name = 'jira_user_ids[]';
+      jiraSelect.classList.add('form-control');
+      var codeGiantSelect = document.createElement('select');
+      codeGiantSelect.name = 'code_giant_user_ids[]';
+      codeGiantSelect.classList.add('form-control');
+
+      populateSelect(jiraSelect, <%= raw @jira_users.to_json %>);
+      populateSelect(codeGiantSelect, <%= raw @code_giant_users.to_json %>);
+
+      col1.appendChild(jiraSelect);
+      col2.appendChild(codeGiantSelect);
+
+      row.appendChild(col1);
+      row.appendChild(col2);
+
+      container.appendChild(row);
+    });
+
+    function populateSelect(selectElement, options) {
+      selectElement.appendChild(new Option("Select an option", ""));
+      options.forEach(function(user) {
+        selectElement.appendChild(new Option(user.display_name || user.name, user.id));
+      });
+    }
+  });
+</script>
