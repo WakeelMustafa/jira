@@ -61,7 +61,7 @@ module Jira
     def authenticate_user!
       unless session[:user_id]
         flash[:alert] = "You must be logged in to access this page."
-        redirect_to root_path
+        redirect_to pages_dashboard_path
       end
     end
 

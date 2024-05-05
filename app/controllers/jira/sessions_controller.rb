@@ -1,5 +1,4 @@
 module Jira
-# app/controllers/sessions_controller.rb
   class SessionsController < ApplicationController
 
     def new; end
@@ -19,18 +18,18 @@ module Jira
       )
 
       session[:user_id] = user.id
-      redirect_to root_path, notice: 'You have been successfully logged in.'
+      redirect_to pages_dashboard_path, notice: 'You have been successfully logged in.'
     end
 
 
 
     def failure
-      redirect_to root_path, alert: "Authentication failed, please try again."
+      redirect_to pages_dashboard_path, alert: "Authentication failed, please try again."
     end
 
     def logout
       reset_session
-      redirect_to root_path, notice: 'You have been successfully logged out.'
+      redirect_to pages_dashboard_path, notice: 'You have been successfully logged out.'
     end
   end
 end

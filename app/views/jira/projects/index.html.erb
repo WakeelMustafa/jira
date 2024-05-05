@@ -11,7 +11,7 @@
       <% end %>
     </ul>
     <div class="mt-4 mb-4 space-between-container">
-      <%= button_to 'Cancel', root_path, method: :get, class: 'btn btn-primary btn-lg cancel-button' %>
+      <%= button_to 'Cancel', pages_dashboard_path, method: :get, class: 'btn btn-primary btn-lg cancel-button' %>
       <%= button_to 'Next', '#', class: 'btn btn-primary btn-lg next-button', id: 'fetch-issues-button', onclick: "showAlertAndDisableButton()" %>
     </div>
   </div>
