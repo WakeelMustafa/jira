@@ -25,4 +25,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 7.1.3.2"
   spec.add_dependency('omniauth-atlassian-oauth2')
   spec.add_dependency('omniauth-rails_csrf_protection')
+  spec.add_dependency('httparty')
+  spec.add_dependency('sidekiq')
+  spec.add_dependency('redis')
+  spec.add_dependency('rest-client')
+  spec.add_dependency('json')
 end
