@@ -5,6 +5,7 @@ require 'sidekiq'
 require 'redis'
 require 'rest-client'
 require 'json'
+require 'dotenv/load'
 require "jira/version"
 require "jira/engine"
 
