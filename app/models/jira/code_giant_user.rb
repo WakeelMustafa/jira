@@ -1,5 +1,7 @@
 module Jira
   class CodeGiantUser < ApplicationRecord
-    has_many :issues, dependent: :nullify
+    self.table_name = 'code_giant_users'
+
+    has_many :issues, dependent: :nullify, class_name: 'Jira::Issue'
   end
 end

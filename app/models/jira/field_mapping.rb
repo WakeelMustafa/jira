@@ -1,5 +1,7 @@
 module Jira
   class FieldMapping < ApplicationRecord
-    belongs_to :project
+    self.table_name = 'field_mappings'
+
+    belongs_to :project, class_name: 'Jira::Project'
   end
 end

@@ -1,6 +1,8 @@
 # app/models/comment.rb
 module Jira
   class Comment < ApplicationRecord
-    belongs_to :issue
+    self.table_name = 'comments'
+
+    belongs_to :issue, class_name: 'Jira::Issue'
   end
 end

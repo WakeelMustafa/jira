@@ -1,6 +1,8 @@
 module Jira
-# app/models/history.rb
-  class History < ApplicationRecord
-    belongs_to :issue
+  # app/models/history.rb
+    class History < ApplicationRecord
+      self.table_name = 'histories'
+  
+      belongs_to :issue, class_name: 'Jira::Issue'
+    end
   end
-end
