@@ -6,7 +6,7 @@ module Jira
     def create
       auth = request.env["omniauth.auth"]
       user = User.find_or_create_by(jira_uid: auth['uid'])
-
+  
       user.update(
         email: auth['info']['email'],
         name: auth['info']['name'],
@@ -16,20 +16,20 @@ module Jira
         jira_site_url: auth['extra']['raw_info']['site']['url'],
         jira_site_id: auth['extra']['raw_info']['site']['id']
       )
-
+  
       session[:user_id] = user.id
-      redirect_to pages_dashboard_path, notice: 'You have been successfully logged in.'
+      redirect_to import_jira_path, notice: 'You have been successfully logged in.'
     end
-
-
-
+  
+  
+  
     def failure
-      redirect_to pages_dashboard_path, alert: "Authentication failed, please try again."
+      redirect_to import_jira_path, alert: "Authentication failed, please try again."
     end
-
+  
     def logout
       reset_session
-      redirect_to pages_dashboard_path, notice: 'You have been successfully logged out.'
+      redirect_to import_jira_path, notice: 'You have been successfully logged out.'
     end
   end
 end

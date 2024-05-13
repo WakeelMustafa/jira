@@ -24,7 +24,7 @@ module Jira
       @field_mapping.mapping = mapping_hash
 
       if @field_mapping.save
-        redirect_to request.referer, notice: 'Field mapping was successfully saved.'
+        redirect_to codegiant_users_page_path(params[:project_id]), notice: 'Field mapping was successfully saved.'
       else
         render :new
       end

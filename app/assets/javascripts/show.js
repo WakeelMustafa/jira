@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const addButtonModal = document.getElementById('add_mapping_modal');
   const fieldMappingsModal = document.getElementById('field_mappings_modal');
 
   function createSelect(name, options) {
@@ -21,11 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return col;
   }
 
-  function addMappingRow() {
+  function addMappingRow(jiraField) {
     const newRow = document.createElement('div');
     newRow.className = 'row field_mapping mb-2';
 
+    const jiraOptions = {
+      [jiraField]: jiraField
+    };
+
+    newRow.appendChild(createSelect('field_mapping[jira_field][]', jiraOptions));
+
     const codegiantOptions = {
+      '': '',
       'Title': 'Title',
       'Start Date': 'Start Date',
       'Due Date': 'Due Date',
@@ -34,37 +40,47 @@ document.addEventListener('DOMContentLoaded', function() {
       'Estimated Time': 'Estimated Time',
       'Actual Time': 'Actual Time'
     };
-    const jiraOptions = {
-      'summary': 'Summary',
-      'description': 'Description',
-      'jira_created_at': 'JIRA Created At',
-      'due_date': 'Due Date',
-      'estimated_time': 'Estimation Time',
-      'actual_time': 'Original Time'
-    };
 
-    newRow.appendChild(createSelect('field_mapping[jira_field][]', jiraOptions));
     newRow.appendChild(createSelect('field_mapping[codegiant_field][]', codegiantOptions));
 
     fieldMappingsModal.appendChild(newRow);
   }
 
-  addButtonModal.addEventListener('click', addMappingRow);
+  function addMappingRows() {
+    const jiraOptions = [
+      'summary',
+      'description',
+      'jira_created_at',
+      'due_date',
+      'estimated_time',
+      'actual_time'
+    ];
+
+    jiraOptions.forEach(jiraField => {
+      addMappingRow(jiraField);
+    });
+  }
+
+  addMappingRows();
 });
 
+function showAlertAndSubmitForm() {
+  showAlert();
+}
+
 function showAlert() {
+  var alertDiv1 = document.getElementById("alert-2");
+  alertDiv1.style.display = 'none';
   const alertDiv = document.createElement('div');
   alertDiv.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show', 'wait-alert');
   alertDiv.setAttribute('role', 'alert');
 
   alertDiv.innerHTML = `
     Fetching CodeGiant Users, please wait...
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
   `;
-
-  document.body.insertBefore(alertDiv, document.body.firstChild);
+  
+  var alertShowDiv = document.getElementById("alert-show");
+  alertShowDiv.appendChild(alertDiv);
 
   document.getElementById('fetch-codegiant-user-button').disabled = true;
 
@@ -76,12 +92,13 @@ function showAlert() {
     data: { project_id: projectId },
     success: function(response) {
       const successAlertDiv = document.createElement('div');
-      successAlertDiv.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+      successAlertDiv.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
       successAlertDiv.setAttribute('role', 'alert');
 
       successAlertDiv.textContent = 'CodeGiant users fetched and saved successfully.';
 
-      document.body.insertBefore(successAlertDiv, document.body.firstChild);
+      var alertShowDiv = document.getElementById("alert-show");
+      alertShowDiv.appendChild(successAlertDiv);
 
       setTimeout(function() {
         successAlertDiv.style.display = 'none';
@@ -91,20 +108,23 @@ function showAlert() {
 
       alertDiv.style.display = 'none';
 
-      window.location.href = `/codegiant_users/${projectId}`;
+      document.getElementById('mappingForm').submit();
     },
     error: function(xhr, status, error) {
       const errorAlertDiv = document.createElement('div');
-      errorAlertDiv.classList.add('alert', 'alert-danger', 'alert-dismissible', 'fade', 'show');
+      errorAlertDiv.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
       errorAlertDiv.setAttribute('role', 'alert');
   
       errorAlertDiv.textContent = 'Failed to fetch CodeGiant Users. Please try again later.';
   
-      document.body.insertBefore(errorAlertDiv, document.body.firstChild);
+      var alertShowDiv = document.getElementById("alert-show");
+      alertShowDiv.appendChild(errorAlertDiv);
   
       setTimeout(function() {
         errorAlertDiv.style.display = 'none';
       }, 60000);
+
+      window.location.href = window.location.href;
     },
     complete: function() {
       document.getElementById('fetch-codegiant-user-button').disabled = false;

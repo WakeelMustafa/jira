@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  */
-.container {
+ .container {
   background-color: #f8f9fa;
   border-radius: 15px;
   padding: 2rem;
@@ -86,4 +86,17 @@
   border: 3px solid #402688 !important;
   margin-left:12px !important;
   color:white !important;
+}
+.work-space-field{
+  margin-right: 52px !important;
+}
+.alert-info {
+  color: white !important;
+  background-color: transparent !important;
+  border-color: transparent  !important;
+}
+.next1-button{
+  background-color: #9929BD !important;
+  border-color: transparent !important;
+  margin-left: 5px !important;
 }

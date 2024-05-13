@@ -5,13 +5,13 @@ module Jira
     def self.fetch_projects(access_token, jira_site_id)
       # Define the API endpoint for retrieving projects
       projects_endpoint = "https://api.atlassian.com/ex/jira/#{jira_site_id}/rest/api/3/project"
-
+  
       begin
         # Make a GET request to the projects endpoint with the access token
         response = RestClient.get(projects_endpoint, { Authorization: "Bearer #{access_token}" })
         # Parse the response JSON
         projects = JSON.parse(response.body)
-
+  
         # Check if the response contains projects
         if projects.is_a?(Array) && !projects.empty?
           puts 'Projects retrieved successfully:'

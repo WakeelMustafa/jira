@@ -15,6 +15,7 @@
       <% else %>
         <%= button_to 'Cancel', logout_path, method: :delete, class: 'btn btn-primary btn-lg cancel-button', disabled: true %>
       <% end %>
+      <%= render 'shared/alerts' %>
       <%= button_to 'Next', fetch_latest_projects_projects_path, method: :post, class: 'btn btn-primary btn-lg next-button' %>
     </div>
   </div>

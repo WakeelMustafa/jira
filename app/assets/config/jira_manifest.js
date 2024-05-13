@@ -3,3 +3,4 @@
 //= link index.js
 //= link show.js
 //= link edit_importing_project.js
+//= link codegiant_users_page.js

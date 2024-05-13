@@ -1,5 +1,7 @@
 Jira::Engine.routes.draw do
-  get '/pages/dashboard'
+  root "pages#home"
+  post '/import/jira', to: 'pages#dashboard'
+  get '/import/jira', to: 'pages#dashboard'
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/logout', to: 'sessions#logout', as: 'logout'
   resources :projects do
