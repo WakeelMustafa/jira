@@ -6,7 +6,7 @@ module Jira
       access_token = current_user&.jira_access_token
       jira_site_id = current_user&.jira_site_id
       response = JiraProjectService.fetch_projects(access_token, jira_site_id)
-
+  
       if response.present?
         if response.is_a?(Hash) && response['code'] == 401
           flash_message =  "Unauthorized: #{response['message']}"

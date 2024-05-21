@@ -12,7 +12,7 @@
     </ul>
     <div class="mt-4 mb-4 space-between-container">
       <%= button_to 'Cancel', root_path, method: :get, class: 'btn btn-primary btn-lg cancel-button' %>
-      <%= render 'shared/alerts' %>
+      <%= render 'jira/shared/alerts' %>
       <div id="alert-show"></div>
       <%= button_to 'Next', '#', class: 'btn btn-primary btn-lg next-button', id: 'fetch-issues-button', onclick: "showAlertAndDisableButton()" %>
     </div>

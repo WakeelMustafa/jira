@@ -33,7 +33,7 @@ alertDiv.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show
 alertDiv.setAttribute('role', 'alert');
 
 alertDiv.innerHTML = `
-  Fetching Jira issues, please wait...
+  Fetching Jira Users, please wait...
 `;
 
 var alertDiv1 = document.getElementById("alert-show");
@@ -45,14 +45,14 @@ var projectId = selectedProjectId;
 
 $.ajax({
   type: 'POST',
-  url: `/projects/${projectId}/fetch_issues`,
+  url: `/projects/${projectId}/fetch_assignees`,
   data: { project_id: projectId },
   success: function(response) {
     const successAlertDiv = document.createElement('div');
     successAlertDiv.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
     successAlertDiv.setAttribute('role', 'alert');
 
-    successAlertDiv.textContent = 'Issues fetched successfully';
+    successAlertDiv.textContent = 'Jira Users fetched successfully';
 
     var alertDiv1 = document.getElementById("alert-show");
     alertDiv1.appendChild(successAlertDiv);
@@ -72,7 +72,7 @@ $.ajax({
     errorAlertDiv.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
     errorAlertDiv.setAttribute('role', 'alert');
 
-    errorAlertDiv.textContent = 'Failed to fetch issues. Please try again later.';
+    errorAlertDiv.textContent = 'Failed to fetch Jira Users. Please try again later.';
 
     var alertDiv1 = document.getElementById("alert-show");
     alertDiv1.appendChild(errorAlertDiv);
@@ -83,7 +83,6 @@ $.ajax({
   },
   complete: function() {
     document.getElementById('fetch-issues-button').disabled = false;
-    
     alertDiv.style.display = 'none';
   }
 });

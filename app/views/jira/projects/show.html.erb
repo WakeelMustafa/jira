@@ -3,7 +3,7 @@
   <div class="col-md-3"></div>
   <div class="container-question col-md-6 text-center mt-4 centered-column-container">
     <h4 class="mt-4 text-white">Issue Fields Mapping</h4>
-    <%= form_with model: FieldMapping.new, url: field_mappings_path(project_id: params[:id]), method: :post, id: 'mappingForm' do |form| %>
+    <%= form_with model: Jira::FieldMapping.new, url: field_mappings_path(project_id: params[:id]), method: :post, id: 'mappingForm' do |form| %>
       <%= form.hidden_field :project_id, id: 'project_id_hidden_field', value: params[:id] %>
       <div id="field_mappings_modal">
         <div class="row field_mapping mt-4 mb-2">
@@ -18,7 +18,7 @@
     <% end %>
     <div class="mt-4 mb-4 space-between-container">
       <%= button_to 'Cancel', edit_importing_project_path(@project.id), method: :get, class: 'btn btn-primary btn-lg next-button' %>
-      <%= render 'shared/alerts' %>
+      <%= render 'jira/shared/alerts' %>
       <div id="alert-show"></div>
       <%= button_to 'Next', '#', class: 'btn btn-primary btn-lg next-button', id: 'fetch-codegiant-user-button', onclick: "showAlertAndSubmitForm()" %>
     </div>

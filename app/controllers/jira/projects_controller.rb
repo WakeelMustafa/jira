@@ -1,9 +1,9 @@
 module Jira
   class ProjectsController < ApplicationController
     before_action :authenticate_user!, only: %i[index fetch_latest_projects]
-    before_action :set_project, only: %i[show fetch_issues update_issue_user]
-    skip_before_action :verify_authenticity_token, only: %i[fetch_issues update_importing_project fetch_codegiant_users]
-  
+    before_action :set_project, only: %i[show update_issue_user update_and_fetch fetch_assignees]
+    skip_before_action :verify_authenticity_token, only: %i[update_importing_project fetch_codegiant_users fetch_assignees]
+    after_action :update_and_fetch, only: %i[update_issue_user]
     def index
       @projects = current_user.projects.all
     end
@@ -17,8 +17,8 @@ module Jira
       redirect_to projects_path
     end
   
-    def fetch_issues
-      FetchJiraIssuesJob.perform_later(current_user, @project&.project_id, params[:id])
+    def fetch_assignees
+      JiraIssueService.new(current_user.jira_access_token, @project&.project_id, current_user.jira_site_id).fetch_assignees
       return :ok
     end
   
@@ -38,16 +38,34 @@ module Jira
     end
   
     def codegiant_users_page
-      @jira_users = JiraUser.joins(:issues).where(issues: { project_id: params[:project_id] }).distinct
+      @jira_users = JiraUser.all
       @code_giant_users = CodeGiantUser.all
     end
   
     def update_issue_user
-      flash_message = UpdateIssueUserJob.perform_now(@project, params[:jira_user_ids], params[:code_giant_user_ids], session[:token], session[:workspace_id])
-      flash[:notice] = flash_message if flash_message.present?
-      redirect_to root_path
-      rescue => e
-        redirect_to request.referer, alert: "An unexpected error occurred: #{e.message}"
+      project_id = params[:id]
+      jira_user_ids = params[:jira_user_ids]
+      code_giant_user_ids = params[:code_giant_user_ids]
+  
+      if jira_user_ids.present?
+        # Iterate through jira_user_ids array and update/create records
+        jira_user_ids.each_with_index do |jira_user_id, index|
+          code_giant_user_id = code_giant_user_ids[index]
+  
+          # Proceed only if both IDs are present
+          if jira_user_id.present? && code_giant_user_id.present?
+            # Find or create user mapping record
+            user_mapping = UserMapping.find_or_initialize_by(jira_user_id: jira_user_id, project_id: project_id)
+            user_mapping.update(code_giant_user_id: code_giant_user_id)
+          end
+        end
+  
+        flash[:success] = "User mappings updated successfully."
+      else
+        flash[:error] = "No user mappings provided."
+      end
+  
+      redirect_to root_path 
     end
   
     def destroy
@@ -55,6 +73,10 @@ module Jira
       @project.destroy
       flash[:notice] = 'Project was successfully deleted.'
       redirect_to projects_path
+    end
+  
+    def update_and_fetch
+      FetchJiraIssuesJob.perform_later(current_user, @project&.project_id, params[:id], session[:token], session[:workspace_id])
     end
   
     private

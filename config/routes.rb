@@ -5,7 +5,7 @@ Jira::Engine.routes.draw do
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/logout', to: 'sessions#logout', as: 'logout'
   resources :projects do
-    post 'fetch_issues', on: :member
+    post 'fetch_assignees', on: :member
     collection do
       post 'fetch_latest_projects', to: 'projects#fetch_latest_projects'
     end

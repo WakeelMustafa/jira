@@ -8,7 +8,7 @@
 
       <div class="field mt-4">
         <%= form.label :prefix, "Prefix", class: "text-white" %>
-        <%= form.text_field :prefix, class: "restricted-input prefix-field", value: session[:prefix] %>
+        <%= form.text_field :prefix, class: "restricted-input prefix-field" %>
       </div>
       <div class="field">
         <%= form.label :title, "Title", class: "text-white" %>
@@ -17,7 +17,7 @@
 
       <div class="mt-4 mb-4 space-between-container">
         <button type="button" onclick="location.href='<%= projects_path %>'" class="btn btn-primary btn-lg edit-button">Cancel</button>
-        <%= render 'shared/alerts' %>
+        <%= render 'jira/shared/alerts' %>
         <button type="submit" class="btn btn-success edit-button">Next</button>
       </div>
     <% end %>

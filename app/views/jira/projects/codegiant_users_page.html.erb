@@ -1,3 +1,4 @@
+
 <%= javascript_include_tag 'codegiant_users_page' %>
 <div class="row">
   <div class="col-md-3"></div>
@@ -24,9 +25,10 @@
         </div>
       <% end %>
     <% end %>
+    <p style="color: orange" class="mt-4"><i class="fas fa-exclamation-triangle"></i><b> Note:</b> If you select a user who is not in selected project, his issues will not mapped.</p>
     <div class="mt-4 mb-4 space-between-container">
       <%= link_to 'Cancel', project_path(params[:project_id]), method: :get, class: 'btn btn-primary btn-lg next1-button' %>
-      <%= render 'shared/alerts' %>
+      <%= render 'jira/shared/alerts' %>
       <button type="button" id="submitFormButton" class="btn btn-primary btn-lg next1-button">Done</button>
     </div>
   </div>
