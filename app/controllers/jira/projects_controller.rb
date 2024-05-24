@@ -65,7 +65,7 @@ module Jira
         flash[:error] = "No user mappings provided."
       end
   
-      redirect_to root_path 
+      redirect_to pages_home_path 
     end
   
     def destroy

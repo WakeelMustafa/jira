@@ -1,5 +1,5 @@
 Jira::Engine.routes.draw do
-  root "pages#home"
+  get '/pages/home', to: 'pages#home'
   post '/import/jira', to: 'pages#dashboard'
   get '/import/jira', to: 'pages#dashboard'
   get '/auth/:provider/callback', to: 'sessions#create'

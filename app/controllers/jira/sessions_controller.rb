@@ -18,7 +18,7 @@ module Jira
       )
   
       session[:user_id] = user.id
-      redirect_to import_jira_path, notice: 'You have been successfully logged in.'
+      redirect_to pages_home_path, notice: 'You have been successfully logged in.'
     end
   
   
